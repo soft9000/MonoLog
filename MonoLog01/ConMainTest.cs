@@ -8,6 +8,7 @@ namespace EzLog
 {
     class ConMainTest
     {
+        // Testing The Working, Only.
         static void Main(string[] args)
         {
             string[] test = {

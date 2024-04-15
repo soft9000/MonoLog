@@ -38,7 +38,7 @@ namespace EzLog
         }
 
         /*
-         * TODO - Load from an INI file, maybe ...
+         * TODO - Load from a TagLines file ...
         public LogConfig Load(string sFile)
         {
             if (sFile == null || sFile.Length == 0)

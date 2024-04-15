@@ -47,7 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>EzLog.ConMainTest</StartupObject>
+    <StartupObject>EzLog.ConMain</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
@@ -71,6 +71,9 @@
     <Compile Include="ConMain.cs" />
     <Compile Include="LogConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TagLine.cs" />
+    <Compile Include="TagLines.cs" />
+    <Compile Include="TagLinesTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
