@@ -7,40 +7,86 @@ using System.Threading.Tasks;
 
 namespace EzLog
 {
-    class ConMain
+    public class ConMain
     {
 
-        public delegate bool LogOption(string opt, string[] opts);
+        public delegate TROOL LogOption(int which, string opt, string[] opts);
 
         public static void usage()
         {
-            Console.WriteLine("MonoLog Version 0.0.1 - Basic Logging");
+            Console.WriteLine("MonoLog Version 0.0.2 - Basic Logging");
             Console.WriteLine("Usage:");
-            Console.WriteLine("TODO: MonoLog --config");
+            Console.WriteLine("MonoLog --config");
             Console.WriteLine("                 Interactively create a new configuration.");
-            Console.WriteLine("TODO: MonoLog --config cfg-name");
+            Console.WriteLine("MonoLog --config cfg-name");
             Console.WriteLine("                 Show a predefined configuration.");
-            Console.WriteLine("TODO: MonoLog --config cfg-name ... ");
+            Console.WriteLine("MonoLog --config cfg-name ... ");
             Console.WriteLine("                 Log via a predefined configuration.");
             Console.WriteLine("MonoLog ... ");
             Console.WriteLine("                 Log to ./mono.log file.");
         }
 
-        public static bool config(string sFlag, string[] opts)
+        public static TROOL config(int where, string sFlag, string[] opts)
         {
             if (sFlag.Equals("--config") && opts.Length == 1)
             {
-                // create a config
+                // create a new config
+                LogConfig cfg = LogConfigDlg.Create(Console.Out, Console.In);
+                if (cfg == null)
+                {
+                    Console.Error.WriteLine("Error: Configuration aborted.");
+                    return TROOL.ERROR;
+                }
+                if (!LogConfig.Save(cfg))
+                {
+                    Console.Error.WriteLine("Error: Unable to write [" + cfg.ConfigName + "].");
+                    return TROOL.ERROR;
+                }
+                Console.Out.WriteLine("Success: Created [" + cfg.ConfigName + "]");
+                return TROOL.TRUE;
             }
             if (sFlag.Equals("--config") && opts.Length == 2)
             {
-                // show a config
-            } 
+                // display and / or update a config
+                LogConfig cfg = LogConfig.LoadConfig(opts[1]);
+                if (cfg == null)
+                {
+                    Console.Error.WriteLine("Error: Unable to configure [" + opts[1] + "]: Please create it?");
+                    return TROOL.ERROR;
+                }
+                TROOL br = LogConfigDlg.DisplayOrUpdate(cfg, Console.Out, Console.In);
+                if (br == TROOL.TRUE)
+                {
+                    if (!LogConfig.Save(cfg))
+                    {
+                        Console.Error.WriteLine("Error: Unable to update [" + opts[1] + "].");
+                        return TROOL.ERROR;
+                    }
+                    else
+                    {
+                        Console.Out.WriteLine("Updated [" + opts[1] + "].");
+                    }
+                }
+                return TROOL.TRUE;
+            }
             if (sFlag.Equals("--config") && opts.Length >= 2)
             {
                 // use a config
+                LogConfig cfg = LogConfig.LoadConfig(opts[1]);
+                if (cfg == null)
+                {
+                    Console.Error.WriteLine("Error: Unable to configure [" + opts[1] + "]: Please create it?");
+                    return TROOL.ERROR;
+                }
+                Console.Out.WriteLine("Loaded [" + cfg.ConfigName + "] ...");
+                List<string> alist = new List<string>();
+                for (int ss = where + 2; ss < opts.Length; ss++)
+                {
+                    alist.Add(opts[ss]);
+                }
+                if (!MonoLog.Log(cfg, alist.ToArray())) { return TROOL.ERROR; }
             }
-            return false;
+            return TROOL.TRUE;
         }
 
 
@@ -58,66 +104,41 @@ namespace EzLog
             return LogConfig.Load();
         }
 
-        static bool MonoLog(string message)
-        {
-            bool br = false;
-            LogConfig file = getDefaultFile();
-            using (StreamWriter ofi = new StreamWriter(file.getFilePath(), true))
-            {
-                ofi.Write(file.getDefaultTime());
-                ofi.Write(":\t");
-                ofi.WriteLine(message);
-                ofi.Flush();
-                ofi.Close();
-                br = true;
-            }           
-            return br;
-        }
 
-        static bool MonoLog(string[] args)
-        {
-            StringBuilder sb = new StringBuilder();
-            bool bFirst = true;
-            foreach (string str in args)
-            {
-                if (!bFirst)
-                {
-                    sb.Append(" ");
-                }
-                sb.Append(str);
-                bFirst = false;
-            }
-            return MonoLog(sb.ToString());
-        }
-
-        public static void Main(string[] args)
+        public static int DoMain(string[] args)
         {
             if (args.Length == 0)
             {
                 usage();
-                return;
+                return 1;
             }
-            foreach (string str in args)
+            for (int ss = 0; ss < args.Length; ss++)
             {
+                string str = args[ss];
                 LogOption opt = GetOption(str);
                 if (opt != null)
                 {
-                    if (opt(str, args) == false)
+                    if (opt(ss, str, args) == TROOL.ERROR)
                     {
                         Console.Error.WriteLine("Error: MonoLog Option");
-                        Environment.Exit(1);
+                        return 1;
                     }
-                    Environment.Exit(0);
+                    return 0;
                 }
-
-                if (MonoLog(args) == false)
-                {
-                    Console.Error.WriteLine("Error: MonoLog Operation");
-                    Environment.Exit(1);
-                }
-                Environment.Exit(0);
 
             }
+
+            if (MonoLog.Log(MonoLog.Flatten(args)) == false)
+            {
+                Console.Error.WriteLine("Error: MonoLog Operation");
+                return 1;
+            }
+            return 0;
+        }
+
+        public static void Main(string[] args)
+        {
+            Environment.Exit(DoMain(args));
         }
     }
 }

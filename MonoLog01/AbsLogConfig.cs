@@ -7,7 +7,9 @@ namespace EzLog
 {
     public abstract class AbsLogConfig
     {
-        abstract public string getFilePath();
-        abstract public string getDefaultTime();
+        abstract public string GetConfigName();
+        abstract public string GetConfigFile();
+        abstract public string GetLogFile();
+        abstract public string GetTime();
     }
 }

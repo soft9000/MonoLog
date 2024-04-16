@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace EzLog
 {
+    [TestClass]
     class TagLinesTest
     {
         // Testing The Critical Path, Only.
-
+        [TestMethod]
         public static void Main(string[] args)
         {
             string ZFILE = "testA.config";

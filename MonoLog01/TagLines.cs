@@ -16,6 +16,10 @@ namespace EzLog
             return lines.GetEnumerator();
         }
 
+        public bool IsNull() {
+            return lines.Count == 0;
+        }
+
         override
         public string ToString()
         {
