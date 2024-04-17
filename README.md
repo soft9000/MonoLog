@@ -22,6 +22,10 @@ One interesting feature here was to use '[deletages](https://github.com/soft9000
 
 Also mundane for some yet possibly new to several is the 3-state '[troolean](https://github.com/soft9000/MonoLog/blob/aac4e9d004b65b6bebb598e6f3ba537ebecec3a7/MonoLog01/TROOL.cs#L12)' idea. -Don't code add-ons, without it?
 
+## Backstory
 None too bad for a tad 'ore a day's coding, methinks - yet this 'be _at least_ the _5th time_ that I've crafted the concept _in just as many_ programming languages (C, C++, Java, Python now C#.)
 
 p.s: Typing `MonoLog` is just too error prone on POSIX, so we're using `mlog` as the 'official.
+
+## zSupport?
+If you want to support the effort, I seek no donations. Instead, simply feel free to purchase one of [my educational](https://www.udemy.com/user/randallnagy2/) or [printed](https://www.amazon.com/Randall-Nagy/e/B08ZJLH1VN?ref=sr_ntt_srch_lnk_1&qid=1660050704&sr=8-1) productions?
