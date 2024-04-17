@@ -15,7 +15,7 @@ namespace EzLog
         [TestMethod]
         public static void Main(string[] args)
         {
-            string ZFILE = "testA.config";
+            string ZFILE = "testA"+ LogConfig.TYPE_CONFIG;
 
             // STEP:
             TagLines testA = new TagLines();

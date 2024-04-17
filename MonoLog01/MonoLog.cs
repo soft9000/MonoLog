@@ -7,9 +7,18 @@ using System.Threading.Tasks;
 
 namespace EzLog
 {
+    /// <summary>
+    /// "He starts Monologging ..."  ;-)
+    /// </summary>
     public class MonoLog
     {
 
+        /// <summary>
+        /// Use a configuration file.
+        /// </summary>
+        /// <param name="config">Active / testable LogConfig.</param>
+        /// <param name="message">The bare message - no time string.</param>
+        /// <returns>True when the message has been saved.</returns>
         public static bool Log(LogConfig config, string message)
         {
             if (config == null)
@@ -43,6 +52,12 @@ namespace EzLog
             }
         }
 
+        /// <summary>
+        /// Create a message from a series of words. Spaces will be inserted.
+        /// </summary>
+        /// <param name="config">Active / testable LogConfig.</param>
+        /// /// <param name="args">A series of words to be made into a space-delimited message.</param>
+        /// <returns>True when the message has been saved.</returns>
         public static bool Log(LogConfig config, string[] args)
         {
             if (config == null)
@@ -60,6 +75,11 @@ namespace EzLog
 
         }
 
+        /// <summary>
+        /// Send a message to the log file. 
+        /// </summary>
+        /// <param name="message">Undated message to append to the default (`pwd`) log file.</param>
+        /// <returns>True when the message has been saved.</returns>
         public static bool Log(string message)
         {
             LogConfig config = LogConfig.Load();
@@ -77,6 +97,11 @@ namespace EzLog
             return Log(message);
         }
 
+        /// <summary>
+        /// Merge words into a space-delimited message.
+        /// </summary>
+        /// <param name="args">Words to merge.</param>
+        /// <returns>True when the message has been saved.</returns>
         public static string Flatten(string[] args)
         {
             if (args == null || args.Length == 0)

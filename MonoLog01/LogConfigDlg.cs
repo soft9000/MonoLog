@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace EzLog
 {
+    /// <summary>
+    /// Whe we "go gui" we'll want to minimuze the ripple effect of change.
+    /// </summary>
     public class LogConfigDlg
     {
         /// <summary>

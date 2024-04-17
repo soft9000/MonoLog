@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace EzLog
 {
-     public enum TROOL
+    /// <summary>
+    /// When we need to separate the errors from the booleans.
+    /// </summary>
+    public enum TROOL
     {
         TRUE = 1,
         FALSE = 0,

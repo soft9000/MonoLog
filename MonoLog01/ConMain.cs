@@ -7,9 +7,18 @@ using System.Threading.Tasks;
 
 namespace EzLog
 {
+    /// <summary>
+    /// Managing the console user interface. Destined to be a TUIGUI.
+    /// </summary>
     public class ConMain
     {
-
+        /// <summary>
+        /// The "pointer to a function" way to manage any growing set of command-line options.
+        /// </summary>
+        /// <param name="which">The location of the 'opt' in the 'ops'</param>
+        /// <param name="opt">The 'opt' from the 'ops' - convenience.</param>
+        /// <param name="opts">The full set of parameters from the command-line.</param>
+        /// <returns>Troolean is the best way to manage any stdout, stderror reporting.</returns>
         public delegate TROOL LogOption(int which, string opt, string[] opts);
 
         public static void usage()
@@ -26,6 +35,13 @@ namespace EzLog
             Console.WriteLine("                 Log to ./mono.log file.");
         }
 
+        /// <summary>
+        /// Configuration management is our first delegate to manage.
+        /// </summary>
+        /// <param name="which">The location of the 'opt' in the 'ops'</param>
+        /// <param name="opt">The 'opt' from the 'ops' - convenience.</param>
+        /// <param name="opts">The full set of parameters from the command-line.</param>
+        /// <returns>Troolean is the best way to manage any stdout, stderror reporting.</returns>
         public static TROOL config(int where, string sFlag, string[] opts)
         {
             if (sFlag.Equals("--config") && opts.Length == 1)
@@ -89,7 +105,11 @@ namespace EzLog
             return TROOL.TRUE;
         }
 
-
+        /// <summary>
+        /// Each command-line option is parsed to check for a delegate.
+        /// </summary>
+        /// <param name="sFlag">Single CLI string, as present, in any passed parameters.</param>
+        /// <returns>Return null if no LogOption is present.</returns>
         static LogOption GetOption(string sFlag)
         {
             if (sFlag.Equals("--config"))
@@ -99,12 +119,21 @@ namespace EzLog
             return null;
         }
 
+        /// <summary>
+        /// The default, fallback, in-memory log configuration. Always the starting point for any
+        /// new configurations (etc.)
+        /// </summary>
+        /// <returns></returns>
         static LogConfig getDefaultFile()
         {
             return LogConfig.Load();
         }
 
-
+        /// <summary>
+        /// The minimalist's way to test any CLI, methinks.
+        /// </summary>
+        /// <param name="args">Instrumentation params.</param>
+        /// <returns></returns>
         public static int DoMain(string[] args)
         {
             if (args.Length == 0)
@@ -136,6 +165,10 @@ namespace EzLog
             return 0;
         }
 
+        /// <summary>
+        /// The run-time interface to the testable interface.
+        /// </summary>
+        /// <param name="args">Obviously passed-in.</param>
         public static void Main(string[] args)
         {
             Environment.Exit(DoMain(args));

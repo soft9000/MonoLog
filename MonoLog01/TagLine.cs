@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EzLog
 {
+    /// <summary>
+    /// User editable "just data" definition. Comments presently unsupported.
+    /// </summary>
     public class TagLine
     {
         public  const string SEP = "\t";

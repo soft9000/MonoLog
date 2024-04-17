@@ -35,11 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>EzLog.ConMainTest</StartupObject>
+    <StartupObject>EzLog.TagLinesTest</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonoLog">
-      <HintPath>..\..\bin\Debug\MonoLog.exe</HintPath>
+    <Reference Include="mlog">
+      <HintPath>..\..\bin\Debug\mlog.exe</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

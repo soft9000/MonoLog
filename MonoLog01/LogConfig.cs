@@ -7,10 +7,15 @@ using System.Threading.Tasks;
 
 namespace EzLog
 {
+    /// <summary>
+    /// The configuration file enables customizable, user-defined, logging options.
+    /// </summary>
     public class LogConfig : AbsLogConfig, IComparable
     {
-        public static string DEFAULT_CONFIG = LogHome.Home("mono.config");
-        public static string DEFAULT_LOG = "./mono.log";
+        public static string TYPE_CONFIG = ".config"; // unique project file type
+        public static string TYPE_LOG    = ".log";    // unique project file type
+        public static string DEFAULT_CONFIG = LogHome.Home("mono" + TYPE_CONFIG);
+        public static string DEFAULT_LOG = "./mono" + TYPE_LOG;
         private string sConfigName = "mono";
 
         private string sFqFilePath;
@@ -22,6 +27,10 @@ namespace EzLog
             this.sFqFilePath = DEFAULT_LOG;
         }
 
+        /// <summary>
+        /// The actual file content.
+        /// </summary>
+        /// <returns>Representable, parsable, file content.</returns>
         public override string ToString()
         {
             TagLines lines = new TagLines();
@@ -31,24 +40,40 @@ namespace EzLog
             return lines.ToString();
         }
 
+        /// <summary>
+        /// A unique alphanumeric name / token for the confihuration. 
+        /// </summary>
+        /// <returns>The unique configuration name</returns>
         override
         public string GetConfigName()
         {
             return sConfigName;
         }
 
+        /// <summary>
+        /// The fully qualified path and name for the configuration file.
+        /// </summary>
+        /// <returns>The configuration-file name.</returns>
         override
         public string GetConfigFile()
         {
-            return LogHome.Home(GetConfigName() + ".config");
+            return LogHome.Home(GetConfigName() + TYPE_CONFIG);
         }
 
+        /// <summary>
+        /// The fully qualified path and name for the log file.
+        /// </summary>
+        /// <returns>The log-file name.</returns>
         override
         public string GetLogFile()
         {
             return sFqFilePath;
         }
 
+        /// <summary>
+        /// Called every time a date and time string is required.
+        /// </summary>
+        /// <returns>Present time, formatted as desired.</returns>
         override
         public string GetTime()
         {

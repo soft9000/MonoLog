@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace EzLog
 {
+    /// <summary>
+    ///  User editable "just data" collection of tag:value definitions.  Comments presently unsupported.
+    /// </summary>
     public class TagLines : IEnumerable, IComparable
     {
         private List<TagLine> lines = new List<TagLine>();
