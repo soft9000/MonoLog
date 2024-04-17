@@ -8,6 +8,8 @@ namespace EzLog
 {
     /// <summary>
     /// User editable "just data" definition. Comments presently unsupported.
+    /// Inspired by our "TagValue" classes in Java. 
+    /// (https://github.com/soft9000/com.soft9000b/tree/master/S9kGit/src/com/soft9000b/tv)
     /// </summary>
     public class TagLine
     {
