@@ -5,7 +5,7 @@ Also prefer to do so via a binary executable.
 
 Adding configurable logging, therefore, my choices were either to (1) update the EzLog proper, or to (2) simply re-write EzLog using C#. 
 
-The later was faster. Also allows using Mono for any GUI if, as well as when.
+The later was simply less disrutive to my existing .ezlog user base. --Also allows using Mono for any GUI if, as well as when.
 
 ## Usage Hightlights
 * Configurations managed by [unique, single alphanumeric names](https://github.com/soft9000/MonoLog/blob/0894d2c076e77340a7943e9d3a030a1baeb98f56/MonoLog01/LogConfigDlg.cs#L21).
