@@ -16,36 +16,67 @@ namespace EzLog
         public  const string SEP = "\t";
         public  const string ENDL = "\n";
         private string _tag = null;
+        private string _value = null;
 
+        /// <summary>
+        /// The tag integrity is automatically assured.
+        /// </summary>
         public string Tag
         {
             get { return _tag; }
-            set { _tag = value.Trim().Replace(SEP, "_"); }
+            set {
+                if (value == null) value = "";
+                _tag = value.Trim().Replace(SEP, "_");
+                _tag = _tag.Trim().Replace(ENDL, "_");
+            }
         }
-        private string _value = null;
 
+        /// <summary>
+        /// The value's integrity is automatically assured.
+        /// </summary>
         public string Value
         {
-            get { return this._value; }
-            set { this._value = value.Trim().Replace(SEP, "_"); }
+            get { return _value; }
+            set {
+                if (value == null) value = ""; 
+                _value = value.Trim().Replace(SEP, "_");
+                _value = value.Trim().Replace(ENDL, "_");
+            }
         }
 
+        /// <summary>
+        /// Default constructor IsNull().
+        /// </summary>
         public TagLine()
         {
 
         }
 
+        /// <summary>
+        /// Constructor will auto-clean, as well.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
         public TagLine(string tag, string value)
         {
-            this._tag = tag; this._value = value;
+            Tag = tag; Value = value;
         }
 
+        /// <summary>
+        /// Nulls cannot be written.
+        /// </summary>
+        /// <returns>True if either the tag, or the value, shoud not be written.</returns>
         public bool IsNull()
         {
             if (this._tag == null || this._value == null) return true;
             return false;
         }
 
+        /// <summary>
+        /// Humanly edited, anything is possible. Sane items should neither 
+        /// contain separators, nor be null.
+        /// </summary>
+        /// <returns></returns>
         public bool IsSane()
         {
             if (IsNull()) return false;
@@ -59,6 +90,11 @@ namespace EzLog
             } return true;
         }
 
+        /// <summary>
+        /// Create a parasable, representational string for this tag-value pair.
+        /// Newline is not added.
+        /// </summary>
+        /// <returns>The parasable, representational string.</returns>
         override
         public string ToString()
         {
@@ -69,6 +105,11 @@ namespace EzLog
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Factory used it re-create the ToString representation.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         public bool Parse(string line)
         {
             if (line == null || line.Length == 0) return false;
