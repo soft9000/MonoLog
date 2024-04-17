@@ -22,4 +22,6 @@ One interesting feature here was to use '[deletages](https://github.com/soft9000
 
 Also mundane for some yet possibly new to several is the 3-state '[troolean](https://github.com/soft9000/MonoLog/blob/aac4e9d004b65b6bebb598e6f3ba537ebecec3a7/MonoLog01/TROOL.cs#L12)' idea. -Don't code add-ons, without it?
 
-p.s: `MonoLog.exe` is just too error prone on POSIX, so we're using `mlog` as the 'official.
+None too bad for a tad 'ore a day's coding, methinks?
+
+p.s: Typing `MonoLog` is just too error prone on POSIX, so we're using `mlog` as the 'official.
