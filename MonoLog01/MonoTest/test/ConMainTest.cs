@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using EzLog;
 
-namespace EzLog
+namespace EzLogTesting
 {
-    [TestClass]
-    class ConMainTest
+
+    public class ConMainTest
     {
         // Testing The Working, Only.
-        [TestMethod]
-        static void Main(string[] args)
+        public static void MainTest()
         {
             // STEP:
             string[] test = 
@@ -53,7 +53,7 @@ namespace EzLog
                 throw new Exception("Error: Regression 1031");
             }
 
-            Console.WriteLine("Testing Success!");
+            TUI.Message("Testing Success!", Console.Out);
 
         }
     }

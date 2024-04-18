@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EzLog;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 
-namespace EzLog
+namespace EzLogTesting
 {
-    [TestClass]
-    class LogConfigDlgTest
+    public class LogConfigDlgTest
     {
-        // Testing The Working, Only.
-        [TestMethod]
         static void Main(string[] args)
+        {
+            MainTest();
+        }
+
+        // Testing The Working, Only.
+        public static void MainTest()
         {
             String tname = "testA";
             String tlfA = "c:/foo/TestA.log";
@@ -124,7 +128,7 @@ namespace EzLog
 
             File.Delete(tlfA);
             File.Delete(tlfB);
-            Console.WriteLine("Testing Success.");
+            TUI.Message("Testing Success.", Console.Out);
 
         }
     }

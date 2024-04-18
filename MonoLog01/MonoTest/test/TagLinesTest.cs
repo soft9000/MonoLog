@@ -5,15 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EzLog;
 
-namespace EzLog
+namespace EzLogTesting
 {
-    [TestClass]
-    class TagLinesTest
+    public class TagLinesTest
     {
+        static void Main(string[] args)
+        {
+            MainTest();
+        }
+
         // Testing The Critical Path, Only.
-        [TestMethod]
-        public static void Main(string[] args)
+        public static void MainTest()
         {
             string ZFILE = "testA"+ LogConfig.TYPE_CONFIG;
 
@@ -52,7 +56,7 @@ namespace EzLog
             // DONE:
             System.IO.File.Delete(ZFILE);
 
-            Console.WriteLine("Testing Success.");
+            TUI.Message("Testing Success.", Console.Out);
 
         }
     }

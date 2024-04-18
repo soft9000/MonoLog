@@ -21,19 +21,19 @@ namespace EzLog
         public static LogConfig Create(System.IO.TextWriter outp, System.IO.TextReader inp)
         {
             LogConfig result = LogConfig.Load();
-            WriteTitle(outp, "Create");
+            TUI.Title("Configuration: ", "Create", outp);
             string zname;
             int times = 0;
             while (true)
             {
-                outp.Write("Configuration Name [a-Z, 0-9]: ");
+                TUI.Message("Configuration Name [a-Z, 0-9]: ", Console.Out);
                 zname = inp.ReadLine();
                 times++;
                 if (times > 3) return null;
                 string zerror = LogConfig.GetConfigNameError(zname);
                 if (zerror != null)
                 {
-                    outp.WriteLine(zerror);
+                    TUI.Message(zerror, outp);
                     continue;
                 }
                 break;
@@ -61,7 +61,7 @@ namespace EzLog
             {
                 return TROOL.ERROR;
             }
-            WriteTitle(outp, "Editing [" + cfg.ConfigName + "]");
+            TUI.Title("Configuration: ", "Editing", outp);
             int times = 0;
             string zpath;
             bool bChanged = false;
@@ -81,7 +81,7 @@ namespace EzLog
                 try
                 {
                     StreamWriter ofi = new StreamWriter(zpath, false);
-                    ofi.WriteLine("test");
+                    TUI.Message("test", ofi);
                     ofi.Close();
                     File.Delete(zpath);
                     cfg.FilePath = zpath;
@@ -90,7 +90,7 @@ namespace EzLog
                 }
                 catch (Exception ex)
                 {
-                    outp.WriteLine("Error: " + ex.Message);
+                    TUI.Message("Error: " + ex.Message, outp);
                     continue;
                 }
 
@@ -111,13 +111,13 @@ namespace EzLog
             {
                 return TROOL.ERROR;
             }
-            WriteTitle(outp, "Review");
+            TUI.Title("Configuration: ", "Review", outp);
             int times = 0;
             bool bChanged = false;
             while (true)
             {
-                outp.WriteLine(cfg.ToString());
-                outp.WriteLine("Edit? [y/n]: ");
+                TUI.Message(cfg.ToString(), outp);
+                TUI.Message("Edit? [y/n]: ", outp);
                 string edit = inp.ReadLine().ToLower().Trim();
                 times++;
                 if (times > 3 || edit.Length < 1)
@@ -149,11 +149,6 @@ namespace EzLog
             }
         }
 
-        private static void WriteTitle(System.IO.TextWriter outp, string p)
-        {
-            outp.WriteLine("Log Configurator: " + p);
-            outp.WriteLine("~~~~~~~~~~~~~~~~");
-        }
 
     }
 }

@@ -10,7 +10,7 @@ namespace EzLog
     /// <summary>
     /// MonoLog's home / installed / assembly location. 
     /// </summary>
-    public class LogHome
+    public class MonoHome
     {
         private static string ExeName = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
@@ -32,6 +32,33 @@ namespace EzLog
             }
             string subs = ExeName.Substring(0,pos + 1);
             return subs + sfile;
+        }
+
+
+        /// <summary>
+        /// Get any configuration names.
+        /// </summary>
+        /// <returns>List can be empty - never null.</returns>
+        public static string[] GetConfigNames()
+        {
+            List<string> results = new List<string>();
+            string root = Home("");
+            string[] files = Directory.GetFiles(root, "*" + LogConfig.TYPE_CONFIG, SearchOption.TopDirectoryOnly);
+            char[] seps = {
+                              '\\', '/'
+                          };
+            foreach (string file in files)
+            {
+                string afile = file.ToLower();
+                if (afile.EndsWith(LogConfig.TYPE_CONFIG))
+                {
+                    int ipos = afile.LastIndexOfAny(seps);
+                    if(ipos != -1) {
+                        results.Add(afile.Substring(ipos));
+                    }
+                }
+            }
+            return results.ToArray();
         }
 
         /// <summary>

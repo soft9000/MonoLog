@@ -14,14 +14,16 @@ namespace EzLog
     {
         public static string TYPE_CONFIG = ".config"; // unique project file type
         public static string TYPE_LOG    = ".log";    // unique project file type
-        public static string DEFAULT_CONFIG = LogHome.Home("mono" + TYPE_CONFIG);
+        public static string DEFAULT_CONFIG = MonoHome.Home("mono" + TYPE_CONFIG);
         public static string DEFAULT_LOG = "./mono" + TYPE_LOG;
         private string sConfigName = "mono";
 
         private string sFqFilePath;
         string sDateFormat = "yyyy/MM/dd HH:mm:ss [zz]";
 
-
+        /// <summary>
+        /// The default log is in the present working directory (`pwd`)
+        /// </summary>
         public LogConfig()
         {
             this.sFqFilePath = DEFAULT_LOG;
@@ -57,7 +59,7 @@ namespace EzLog
         override
         public string GetConfigFile()
         {
-            return LogHome.Home(GetConfigName() + TYPE_CONFIG);
+            return MonoHome.Home(GetConfigName() + TYPE_CONFIG);
         }
 
         /// <summary>
@@ -81,7 +83,11 @@ namespace EzLog
             return pw.ToString(sDateFormat);
         }
 
-
+        /// <summary>
+        /// Save the configuration to the location specified.
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
         public static bool Save(LogConfig config)
         {
             try
@@ -98,18 +104,31 @@ namespace EzLog
             }
         }
 
-
+        /// <summary>
+        /// Load the default, in-memory, configuration file.
+        /// </summary>
+        /// <returns></returns>
         public static LogConfig Load()
         {
             LogConfig result = new LogConfig();
             return result;
         }
 
+        /// <summary>
+        /// Load the short-name configuration file from `MonoHome`
+        /// </summary>
+        /// <param name="configName">User defined configuration name / alphanumeric token.</param>
+        /// <returns>Can be null.</returns>
         public static LogConfig LoadConfig(string configName)
         {
-            return LogHome.LoadConfig(configName);
+            return MonoHome.LoadConfig(configName);
         }
 
+        /// <summary>
+        /// Load a configuration file from anywhere.
+        /// </summary>
+        /// <param name="sFile">Fully qualified path name.</param>
+        /// <returns>Can be null</returns>
         internal static LogConfig LoadConfigFile(string sFile)
         {
             if (sFile == null || sFile.Length == 0)
@@ -119,7 +138,7 @@ namespace EzLog
             TagLines lines = TagLines.FileRead(sFile);
             if (lines == null || lines.IsNull())
             {
-                sFile = LogHome.Home(sFile);
+                sFile = MonoHome.Home(sFile);
                 lines = TagLines.FileRead(sFile);
                 if (lines == null || lines.IsNull())
                 {
@@ -148,8 +167,17 @@ namespace EzLog
 
         }
 
+        /// <summary>
+        /// Verify a user's configuration name entry.
+        /// </summary>
+        /// <param name="zname"></param>
+        /// <returns></returns>
         public static string GetConfigNameError(string zname)
         {
+            if (zname.ToLower().Equals("mono"))
+            {
+                return "unable to use default name...";
+            }
             if (zname == null || zname.Length == 0)
             {
                 return "unvalue name...";
@@ -170,6 +198,11 @@ namespace EzLog
             return null;
         }
 
+        /// <summary>
+        /// String compare two objects.
+        /// </summary>
+        /// <param name="obj">Any</param>
+        /// <returns>Classic -1|0|1</returns>
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;
@@ -177,18 +210,29 @@ namespace EzLog
 
         }
 
+        /// <summary>
+        /// Set / Get this configuration's user-defined name (UDN.) 
+        /// Note that the UDN is / assume to have been validated by 
+        /// the LogConfigDlg.
+        /// </summary>
         public string ConfigName
         {
             get { return sConfigName; }
             set { sConfigName = value; }
         }
 
+        /// <summary>
+        /// Set / Get path to the log file.
+        /// </summary>
         public string FilePath
         {
             get { return sFqFilePath; }
             set { sFqFilePath = value; }
         }
 
+        /// <summary>
+        /// Set / Get The DateFormat for log entries.
+        /// </summary>
         public string DateFormat
         {
             get { return sDateFormat; }

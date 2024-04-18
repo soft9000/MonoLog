@@ -23,12 +23,12 @@ namespace EzLog
         {
             if (config == null)
             {
-                Console.Error.WriteLine("Error: Configuration not found.");
+                TUI.Message("Error: Configuration not found.", null);
                 return false;
             }
             if (message == null || message.Length == 0)
             {
-                Console.Error.WriteLine("Error: I've nothing to log?");
+                TUI.Message("Error: I've nothing to log?", null);
                 return false;
             }
             StringBuilder sb = new StringBuilder();
@@ -40,9 +40,9 @@ namespace EzLog
             {
                 using (StreamWriter ofi = new StreamWriter(config.GetLogFile(), true))
                 {
-                    ofi.Write(message);
+                    ofi.WriteLine(message);
                     ofi.Flush();
-                    Console.WriteLine(message);
+                    TUI.Message(message, Console.Out);
                     return true;
                 }
             }
@@ -62,12 +62,12 @@ namespace EzLog
         {
             if (config == null)
             {
-                Console.Error.WriteLine("Error: Configuration not found.");
+                TUI.Message("Error: Configuration not found.", null);
                 return false;
             }
             if (args == null || args.Length == 0)
             {
-                Console.Error.WriteLine("Error: I've nothing to log?");
+                TUI.Message("Error: I've nothing to log?", null);
                 return false;
             } 
 
@@ -90,7 +90,7 @@ namespace EzLog
         {
             if (args == null || args.Length == 0)
             {
-                Console.Error.WriteLine("Error: I've nothing to log?");
+                TUI.Message("Error: I've nothing to log?", null);
                 return false;
             } 
             string message = Flatten(args);

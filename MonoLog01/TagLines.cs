@@ -110,7 +110,7 @@ namespace EzLog
                 {
                     if (line.IsSane())
                     {
-                        ofi.WriteLine(line.ToString());
+                        TUI.Message(line.ToString(), ofi);
                         br = true;
                     }
                 }
