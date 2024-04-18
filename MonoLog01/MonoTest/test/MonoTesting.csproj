@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>EzLog.TagLinesTest</StartupObject>
+    <StartupObject>EzLogTesting.TestMain</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mlog">
@@ -56,10 +56,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ConfigManagementTest.cs" />
     <Compile Include="ConMainTest.cs" />
     <Compile Include="LogConfigDlgTest.cs" />
     <Compile Include="TagLinesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestMain.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
