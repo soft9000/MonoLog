@@ -26,37 +26,35 @@ namespace EzLogTesting
             testA.Add(new TagLine("MoNO", "Thi si a longis one."));
             if (TagLines.FileWrite(ZFILE, testA) == false)
             {
-                throw new Exception("Error 1001: TestA Regression.");
+                TestMain.Regression(typeof(ConMainTest).Name, 1001);
             }
             TagLines testB = TagLines.FileRead(ZFILE);
             if (testB == null || testB.CompareTo(testA) != 0)
             {
-                throw new Exception("Error 1011: TestA Regression.");
+                TestMain.Regression(typeof(ConMainTest).Name, 1011);
             }
 
             // STEP:
             testA.Add(new TagLine("Zippo", "The Z is the Zip."));
             if (TagLines.FileWrite(ZFILE, testA) == false)
             {
-                throw new Exception("Error 1021: TestA Regression.");
+                TestMain.Regression(typeof(ConMainTest).Name, 1021);
             }
             testB = TagLines.FileRead(ZFILE);
             if (testB == null || testB.CompareTo(testA) != 0)
             {
-                throw new Exception("Error 1031: TestA Regression.");
+                TestMain.Regression(typeof(ConMainTest).Name, 1031);
             }
 
             // STEP:
             testA.Add(new TagLine("Baston", "Ware Ware III."));
             if (testB.CompareTo(testA) == 0)
             {
-                throw new Exception("Error 1041: TestA Regression.");
+                TestMain.Regression(typeof(ConMainTest).Name, 1041);
             }
 
             // DONE:
             System.IO.File.Delete(ZFILE);
-
-            TUI.Message("Testing Success.", Console.Out);
 
         }
     }

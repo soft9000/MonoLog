@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EzLog
 {
     /// <summary>
-    /// Whe we "go gui" we'll want to minimuze the ripple effect of change.
+    /// When we "go gui" we'll want to minimuze the ripple effect of change.
     /// </summary>
     public class LogConfigDlg
     {
@@ -18,29 +18,29 @@ namespace EzLog
         /// <param name="outp">Where to write to.</param>
         /// <param name="inp">Where to read from.</param>
         /// <returns>Null on timeout / error.</returns>
-        public static LogConfig Create(System.IO.TextWriter outp, System.IO.TextReader inp)
+        public static LogConfig Create(IoSet p)
         {
             LogConfig result = LogConfig.Load();
-            TUI.Title("Configuration: ", "Create", outp);
+            TUI.Title("Configuration: ", "Create", p.Out);
             string zname;
             int times = 0;
             while (true)
             {
-                TUI.Message("Configuration Name [a-Z, 0-9]: ", Console.Out);
-                zname = inp.ReadLine();
+                TUI.Message("Configuration Name [a-Z, 0-9]: ", p.Out);
+                zname = p.In.ReadLine();
                 times++;
                 if (times > 3) return null;
                 string zerror = LogConfig.GetConfigNameError(zname);
                 if (zerror != null)
                 {
-                    TUI.Message(zerror, outp);
+                    TUI.Message(zerror, p.Out);
                     continue;
                 }
                 break;
 
             }
             result.ConfigName = zname;
-            TROOL trool = Edit(result, outp, inp);
+            TROOL trool = Edit(result, p);
             if (trool == TROOL.TRUE)
             {
                 return result;
@@ -55,20 +55,20 @@ namespace EzLog
         /// <param name="outp">Where to write to.</param>
         /// <param name="inp">Where to read from.</param>
         /// /// <returns>False if error / timeout.</returns>
-        public static TROOL Edit(LogConfig cfg, TextWriter outp, TextReader inp)
+        public static TROOL Edit(LogConfig cfg, IoSet p)
         {
             if (cfg == null)
             {
                 return TROOL.ERROR;
             }
-            TUI.Title("Configuration: ", "Editing", outp);
+            TUI.Title("Configuration: ", "Editing", p.Out);
             int times = 0;
             string zpath;
             bool bChanged = false;
             while (true)
             {
-                outp.Write("Log file path: ");
-                zpath = inp.ReadLine();
+                p.Out.Write("Log file path: ");
+                zpath = p.In.ReadLine();
                 times++;
                 if (times > 3)
                 {
@@ -90,7 +90,7 @@ namespace EzLog
                 }
                 catch (Exception ex)
                 {
-                    TUI.Message("Error: " + ex.Message, outp);
+                    TUI.Message("Error: " + ex.Message, p.Out);
                     continue;
                 }
 
@@ -105,20 +105,20 @@ namespace EzLog
         /// <param name="outp">Where to write to.</param>
         /// <param name="inp">Where to read from.</param>
         /// /// <returns>False if error / timeout.</returns>
-        public static TROOL DisplayOrUpdate(LogConfig cfg, TextWriter outp, TextReader inp)
+        public static TROOL DisplayOrUpdate(LogConfig cfg, IoSet p)
         {
             if (cfg == null)
             {
                 return TROOL.ERROR;
             }
-            TUI.Title("Configuration: ", "Review", outp);
+            TUI.Title("Configuration: ", "Review", p.Out);
             int times = 0;
             bool bChanged = false;
             while (true)
             {
-                TUI.Message(cfg.ToString(), outp);
-                TUI.Message("Edit? [y/n]: ", outp);
-                string edit = inp.ReadLine().ToLower().Trim();
+                TUI.Message(cfg.ToString(), p.Out);
+                TUI.Message("Edit? [y/n]: ", p.Out);
+                string edit = p.In.ReadLine().ToLower().Trim();
                 times++;
                 if (times > 3 || edit.Length < 1)
                 {
@@ -138,7 +138,7 @@ namespace EzLog
                 }
                 if (edit[0] == 'y')
                 {
-                    TROOL trool = Edit(cfg, outp, inp);
+                    TROOL trool = Edit(cfg, p);
                     if (trool == TROOL.TRUE)
                     {
                         bChanged = true;

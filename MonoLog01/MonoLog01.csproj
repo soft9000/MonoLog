@@ -85,7 +85,9 @@
     <Compile Include="LogConfigDlg.cs" />
     <Compile Include="MonoHome.cs" />
     <Compile Include="MonoLog.cs" />
+    <Compile Include="LogOptionParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IoSet.cs" />
     <Compile Include="TagLine.cs" />
     <Compile Include="TagLines.cs" />
     <Compile Include="TROOL.cs" />

@@ -23,7 +23,7 @@ namespace EzLogTesting
                     };
             if (ConMain.DoMain(test) != 0)
             {
-                throw new Exception("Error: Regression 1000");
+                TestMain.Regression(typeof(ConMainTest).Name, 1001);
             }
             LogConfig cfg = new LogConfig();
 
@@ -31,17 +31,17 @@ namespace EzLogTesting
             string ATEST = "testa";
             if (LogConfig.GetConfigNameError(ATEST) != null)
             {
-                throw new Exception("Error: Regression 1001");
+                TestMain.Regression(typeof(ConMainTest).Name,1011);
             }
             cfg.ConfigName = ATEST;
             if (LogConfig.Save(cfg) == false)
             {
-                throw new Exception("Error: Regression 1011");
+                TestMain.Regression(typeof(ConMainTest).Name, 1021);
 
             }
             if (LogConfig.LoadConfig(cfg.GetConfigName()) == null)
             {
-                throw new Exception("Error: Regression 1021");
+                TestMain.Regression(typeof(ConMainTest).Name, 1031);
             }
             test = new string[] {
                     "--config",
@@ -50,10 +50,8 @@ namespace EzLogTesting
                     };
             if (ConMain.DoMain(test) != 0)
             {
-                throw new Exception("Error: Regression 1031");
+                TestMain.Regression(typeof(ConMainTest).Name, 1041);
             }
-
-            TUI.Message("Testing Success!", Console.Out);
 
         }
     }

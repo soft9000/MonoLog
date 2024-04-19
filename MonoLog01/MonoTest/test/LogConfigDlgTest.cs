@@ -23,7 +23,7 @@ namespace EzLogTesting
             String tname = "testA";
             String tlfA = "c:/foo/TestA.log";
             File.Delete(tlfA);
-            // STEP: Creat & Load a Configuration TOKEN
+            // STEP: Create & Load a Configuration TOKEN
             {
                 File.Delete(tlfA);
                 MemoryStream ms = new MemoryStream();
@@ -32,47 +32,48 @@ namespace EzLogTesting
                 userLines.WriteLine(tlfA);
                 userLines.WriteLine("Nope");
                 userLines.Flush();
-
                 ms.Seek(0L, SeekOrigin.Begin);
 
-                StreamWriter wResult = new StreamWriter(new MemoryStream());
-                LogConfig cfgA = LogConfigDlg.Create(
-                    wResult,
-                    new StreamReader(ms)
-                    );
+                LogOptionParams p = new LogOptionParams(0, "--config", null);
+                StreamWriter osw = new StreamWriter(new MemoryStream());
+                p.SetOutput(osw);
+                StreamReader isw = new StreamReader(ms);
+                p.SetInput(isw);
+                LogConfig cfgA = LogConfigDlg.Create(p);
                 if (LogConfig.Save(cfgA) == false)
                 {
-                    throw new Exception("Error: Regression 1001");
+                    TestMain.Regression(typeof(ConMainTest).Name, 1000);
                 }
                 LogConfig cfg = LogConfig.LoadConfig(tname);
                 if (cfg == null)
                 {
-                    throw new Exception("Error: Regression 1011");
+                    TestMain.Regression(typeof(ConMainTest).Name, 1001);
                 }
+                TROOL trool = LogConfigDlg.DisplayOrUpdate(cfg, p);
                 if (cfgA.CompareTo(cfg) != 0)
                 {
-                    throw new Exception("Error: Regression 1021");
-                }                
+                    TestMain.Regression(typeof(ConMainTest).Name, 1011);
+                }
                 if (File.Exists(cfg.GetConfigFile()) == false)
                 {
-                    throw new Exception("Error: Regression 1031");
+                    TestMain.Regression(typeof(ConMainTest).Name, 1021);
                 }
 
                 if (MonoLog.Log(cfg, "Simply elegant") == false)
                 {
-                    throw new Exception("Error: Regression 1041");
+                    TestMain.Regression(typeof(ConMainTest).Name, 1031);
                 }
                 if (File.Exists(cfg.GetConfigFile()) == false)
                 {
-                    throw new Exception("Error: Regression 1041");
+                    TestMain.Regression(typeof(ConMainTest).Name, 1041);
                 }
                 if (File.Exists(cfg.GetLogFile()) == false)
                 {
-                    throw new Exception("Error: Regression 1051");
+                    TestMain.Regression(typeof(ConMainTest).Name, 1051);
                 }
                 if (File.Exists(tlfA) == false)
                 {
-                    throw new Exception("Error: Regression 1061");
+                    TestMain.Regression(typeof(ConMainTest).Name, 1061);
                 }
             }
 
@@ -83,52 +84,49 @@ namespace EzLogTesting
                 LogConfig cfg = LogConfig.LoadConfig(tname);
                 if (cfg == null)
                 {
-                    throw new Exception("Error: Regression 2001");
-                } 
-                
+                    TestMain.Regression(typeof(ConMainTest).Name, 2001);
+                }
+
                 MemoryStream ms = new MemoryStream();
                 StreamWriter userLines = new StreamWriter(ms);
                 userLines.WriteLine("yup");
                 userLines.WriteLine(tlfB);
                 userLines.WriteLine("Nope");
                 userLines.Flush();
-
                 ms.Seek(0L, SeekOrigin.Begin);
 
-                StreamWriter wResult = new StreamWriter(new MemoryStream());
-                TROOL trool = LogConfigDlg.DisplayOrUpdate(cfg,
-                    wResult,
-                    new StreamReader(ms)
-                    );
+                LogOptionParams p = new LogOptionParams(0, "--config", null);
+                p.SetOutput(new StreamWriter(new MemoryStream()));
+                p.SetInput(new StreamReader(ms));
+                TROOL trool = LogConfigDlg.DisplayOrUpdate(cfg, p);
                 if (trool == TROOL.ERROR)
                 {
-                    throw new Exception("Error: Regression 2011");
+                    TestMain.Regression(typeof(ConMainTest).Name, 2011);
                 }
                 if (LogConfig.Save(cfg) == false)
                 {
-                    throw new Exception("Error: Regression 2021");
+                    TestMain.Regression(typeof(ConMainTest).Name, 2021);
                 }
                 if (MonoLog.Log(cfg, "Simply eleganterer") == false)
                 {
-                    throw new Exception("Error: Regression 2031");
+                    TestMain.Regression(typeof(ConMainTest).Name, 2031);
                 }
                 if (File.Exists(cfg.GetConfigFile()) == false)
                 {
-                    throw new Exception("Error: Regression 2041");
+                    TestMain.Regression("ELogConfigDlgTest", 2041);
                 }
                 if (File.Exists(cfg.GetLogFile()) == false)
                 {
-                    throw new Exception("Error: Regression 2051");
+                    TestMain.Regression(typeof(ConMainTest).Name, 2051);
                 }
                 if (File.Exists(tlfB) == false)
                 {
-                    throw new Exception("Error: Regression 2061");
+                    TestMain.Regression(typeof(ConMainTest).Name, 2061);
                 }
             }
 
             File.Delete(tlfA);
             File.Delete(tlfB);
-            TUI.Message("Testing Success.", Console.Out);
 
         }
     }
