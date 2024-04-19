@@ -11,14 +11,14 @@ The later was simply less disrutive to my existing [.ezlog user base](https://gi
 * Configurations managed by [unique, single alphanumeric names](https://github.com/soft9000/MonoLog/blob/0894d2c076e77340a7943e9d3a030a1baeb98f56/MonoLog01/LogConfigDlg.cs#L21).
 * Configurations reside [next to the active assembly](https://github.com/soft9000/MonoLog/blob/0894d2c076e77340a7943e9d3a030a1baeb98f56/MonoLog01/LogHome.cs#L15).
 * '[TagLines](https://github.com/soft9000/MonoLog/blob/0894d2c076e77340a7943e9d3a030a1baeb98f56/MonoLog01/TagLines.cs#L17)' replace INI Files.
-* User [dialog encapsulations](https://github.com/soft9000/MonoLog/blob/0894d2c076e77340a7943e9d3a030a1baeb98f56/MonoLog01/LogConfigDlg.cs#L13) permit future TUIGUI (read `mono`) 'Ops.
+* User [dialog encapsulations](https://github.com/soft9000/MonoLog/blob/b535ab543d9cbf77e23506af92a83249b6f71ab1/MonoLog01/LogConfigDlg.cs#L11) permit future TUIGUI (read `mono`) 'Ops.
 
 ## Testing Highlights
-* The [dialogs were written to be testable](https://github.com/soft9000/MonoLog/blob/49b4adafd89b919f57f10880d3388e50869cbd85/MonoLog01/MonoTest/test/LogConfigDlgTest.cs#L24).
-* The [main CLI was written to be tested](https://github.com/soft9000/MonoLog/blob/49b4adafd89b919f57f10880d3388e50869cbd85/MonoLog01/MonoTest/test/ConMainTest.cs#L24).
+* The [dialogs were written to be testable](https://github.com/soft9000/MonoLog/blob/b535ab543d9cbf77e23506af92a83249b6f71ab1/MonoLog01/MonoTest/test/LogConfigDlgTest.cs#L29).
+* The [main CLI was written to be tested](https://github.com/soft9000/MonoLog/blob/b535ab543d9cbf77e23506af92a83249b6f71ab1/MonoLog01/MonoTest/test/ConMainTest.cs#L24).
 
 ## Code Highlights
-One interesting feature here was to use '[deletages](https://github.com/soft9000/MonoLog/blob/aac4e9d004b65b6bebb598e6f3ba537ebecec3a7/MonoLog01/ConMain.cs#L22)' (function pointers) to manage an extensible, whole-line argument processing strategy. While passing around pointers to parameterized functions is a relatively advanced concept in C/C++, the idiom is easier to 'grok in C#. Delegates are also a LOT more powerful for use in parameter-parsing function-factories.
+One interesting feature here was to use '[deletages](https://github.com/soft9000/MonoLog/blob/b535ab543d9cbf77e23506af92a83249b6f71ab1/MonoLog01/ConMain.cs#L23)' (function pointers) to manage an extensible, whole-line argument processing strategy. While passing around pointers to parameterized functions is a relatively advanced concept in C/C++, the idiom is easier to 'grok in C#. Delegates are also a LOT more powerful for use in parameter-parsing function-factories.
 
 Also mundane for some yet possibly new to several is the 3-state '[troolean](https://github.com/soft9000/MonoLog/blob/aac4e9d004b65b6bebb598e6f3ba537ebecec3a7/MonoLog01/TROOL.cs#L12)' idea. -Don't code add-ons, without it?
 
