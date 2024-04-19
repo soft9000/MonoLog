@@ -38,6 +38,7 @@ namespace EzLog
             TUI.Message("                 Log via a predefined configuration.", Console.Out);
             TUI.Message("mlog.exe --config.list", Console.Out);
             TUI.Message("                 Display configuration names.", Console.Out);
+            /*
             TUI.Message("mlog.exe --exe config.[l|e|u|d].number ", Console.Out);
             TUI.Message("                 Perform operation on item number in config log. (*)", Console.Out);
             TUI.Message("                 l = [l]ist from item number.", Console.Out);
@@ -49,6 +50,7 @@ namespace EzLog
             TUI.Message("                 Example:  `ls | mono mlog.exe -p mono`", Console.Out);
             TUI.Message("                 Example:  `dir | mlog -p mono`", Console.Out);
             TUI.Message("(*) NOTE: Use `mono` for `./mono.log` for `--exe` and `--pipe`.", Console.Out);
+            */
         }
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace EzLog
         /// <param name="opt">The 'opt' from the 'ops' - convenience.</param>
         /// <param name="opts">The full set of parameters from the command-line.</param>
         /// <returns>Troolean is the best way to manage any stdout, stderror reporting.</returns>
-        public static TROOL config_list(ref LogOptionParams p)
+        public static TROOL config_list(LogOptionParams p)
         {
             if (!p.IsSane())
             {
@@ -67,9 +69,9 @@ namespace EzLog
 
             string[] names = MonoHome.GetConfigNames();
             TUI.Message("User-Defined Configurations:", p.Out);
-            for (int ss = 0; ss < names.Length;ss++ )
+            for (int ss = 0; ss < names.Length; ss++)
             {
-                TUI.Message(String.Format("{0}.) {1}", ss+1, names[ss]), p.Out);
+                TUI.Message(String.Format("{0}.) {1}", ss + 1, names[ss]), p.Out);
             }
             return TROOL.TRUE;
         }
@@ -86,8 +88,8 @@ namespace EzLog
             if (!p.IsSane())
             {
                 return TROOL.ERROR;
-            } 
-            
+            }
+
             if (p.option.Equals("--exe"))
             {
             }
@@ -139,10 +141,10 @@ namespace EzLog
                 }
                 if (!LogConfig.Save(cfg))
                 {
-                    TUI.Message("Error: Unable to write [" + cfg.ConfigName + "].", p.Error); 
+                    TUI.Message("Error: Unable to write [" + cfg.ConfigName + "].", p.Error);
                     return TROOL.ERROR;
                 }
-                TUI.Message("Success: Created [" + cfg.ConfigName + "]", p.Out); 
+                TUI.Message("Success: Created [" + cfg.ConfigName + "]", p.Out);
                 return TROOL.TRUE;
             }
             if (p.option.Equals("--config") && p.opts.Length == 2)
@@ -151,7 +153,7 @@ namespace EzLog
                 LogConfig cfg = LogConfig.LoadConfig(p.opts[1]);
                 if (cfg == null)
                 {
-                    TUI.Message("Error: Unable to configure [" + p.opts[1] + "]: Please create it?", p.Error); 
+                    TUI.Message("Error: Unable to configure [" + p.opts[1] + "]: Please create it?", p.Error);
                     return TROOL.ERROR;
                 }
                 TROOL br = LogConfigDlg.DisplayOrUpdate(cfg, p);
@@ -159,12 +161,12 @@ namespace EzLog
                 {
                     if (!LogConfig.Save(cfg))
                     {
-                        TUI.Message("Error: Unable to write [" + cfg.ConfigName + "].", p.Error); 
+                        TUI.Message("Error: Unable to write [" + cfg.ConfigName + "].", p.Error);
                         return TROOL.ERROR;
                     }
                     else
                     {
-                        TUI.Message("Updated [" + p.opts[1] + "].", p.Out); 
+                        TUI.Message("Updated [" + p.opts[1] + "].", p.Out);
                     }
                 }
                 return TROOL.TRUE;
@@ -175,10 +177,10 @@ namespace EzLog
                 LogConfig cfg = LogConfig.LoadConfig(p.opts[1]);
                 if (cfg == null)
                 {
-                    TUI.Message("Error: Unable to configure [" + p.opts[1] + "]: Please create it?", p.Error); 
+                    TUI.Message("Error: Unable to configure [" + p.opts[1] + "]: Please create it?", p.Error);
                     return TROOL.ERROR;
                 }
-                TUI.Message("Loaded [" + cfg.ConfigName + "] ...", p.Out); 
+                TUI.Message("Loaded [" + cfg.ConfigName + "] ...", p.Out);
                 List<string> alist = new List<string>();
                 for (int ss = p.where + 2; ss < p.opts.Length; ss++)
                 {
@@ -200,6 +202,10 @@ namespace EzLog
             {
                 return config;
             }
+            if (sFlag.Equals("--config.list"))
+            {
+                return config_list;
+            }
             return null;
         }
         #endregion
@@ -209,7 +215,7 @@ namespace EzLog
         /// new configurations (etc.)
         /// </summary>
         /// <returns></returns>
-        static LogConfig getDefaultFile()
+        static LogConfig GetDefaultFile()
         {
             return LogConfig.Load();
         }
@@ -217,10 +223,25 @@ namespace EzLog
         /// <summary>
         /// The minimalist's way to test any CLI, methinks.
         /// </summary>
-        /// <param name="args">Instrumentation params.</param>
-        /// <returns></returns>
+        /// <param name="args">Classic CLI</param>
+        /// <returns>Classic 0 = ok, 1 == nokay</returns>
         public static int DoMain(string[] args)
         {
+            return DoMain(args, new IoSet());
+        }
+
+        /// <summary>
+        /// Far more testable - need those streams.
+        /// </summary>
+        /// <param name="args">Classic CLI</param>
+        /// <param name="lop">I/O Streams</param>
+        /// <returns>Classic 0 = ok, 1 == nokay</returns>
+        public static int DoMain(string[] args, IoSet ios)
+        {
+            if (ios == null)
+            {
+                ios = new IoSet();
+            }
             if (args.Length == 0)
             {
                 usage();
@@ -228,13 +249,15 @@ namespace EzLog
             }
             for (int ss = 0; ss < args.Length; ss++)
             {
-                string str = args[ss];
-                LogOption opt = GetOption(str);
+                string which = args[ss];
+                LogOption opt = GetOption(which);
                 if (opt != null)
                 {
-                    if (opt(new LogOptionParams(ss, str, args)) == TROOL.ERROR)
+                    LogOptionParams lop = new LogOptionParams(ss, which, args);
+                    lop.Assign(ios);
+                    if (opt(lop) == TROOL.ERROR)
                     {
-                        TUI.Message("Error: MonoLog Option", Console.Error);
+                        TUI.Message("Error: MonoLog Option", ios.Error);
                         return 1;
                     }
                     return 0;
@@ -244,7 +267,7 @@ namespace EzLog
 
             if (MonoLog.Log(MonoLog.Flatten(args)) == false)
             {
-                TUI.Message("Error: MonoLog Operation", Console.Error); 
+                TUI.Message("Error: MonoLog Operation", ios.Error);
                 return 1;
             }
             return 0;

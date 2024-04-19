@@ -21,6 +21,14 @@ namespace EzLog
             this._Error = Console.Error;
         }
 
+        public bool Assign(IoSet ios)
+        {
+            if(ios != null) {
+                return (SetInput(ios.In) && SetOutput(ios.Out) && SetError(ios.Error));
+            }
+            return false;
+        }
+
         #region Validating IO Setters
         public bool SetInput(System.IO.TextReader aval)
         {

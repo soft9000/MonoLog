@@ -40,13 +40,54 @@ namespace EzLogTesting
             {
                 // STEP: List Configurations
                 LogOptionParams p = new LogOptionParams(0, null, null);
-                MemoryStream ms = new MemoryStream(1024);
+                MemoryStream ms = new MemoryStream();
                 StreamWriter swriter = new StreamWriter(ms);
                 if (p.SetOutput(swriter) == false)
                 {
                     TestMain.Regression(typeof(ConMainTest).Name, 1011);
                 }
-                EzLog.ConMain.config_list(ref p);
+                EzLog.ConMain.config_list(p);
+                swriter.Flush();
+                ms.Seek(0L, SeekOrigin.Begin);
+                StreamReader reader = new StreamReader(ms);
+                string result = reader.ReadToEnd();
+                /*
+                User-Defined Configurations:
+                1.) \~a.config
+                2.) \~b.config
+                3.) \~c.config
+                */
+                if (result.IndexOf("~a.config") == -1)
+                {
+                    TestMain.Regression(typeof(ConMainTest).Name, 1021);
+                }
+                if (result.IndexOf("~b.config") == -1)
+                {
+                    TestMain.Regression(typeof(ConMainTest).Name, 1031);
+                }
+                if (result.IndexOf("~c.config") == -1)
+                {
+                    TestMain.Regression(typeof(ConMainTest).Name, 1041);
+                }
+            }
+            {
+                // STEP: Test the CLI
+                // mlog.exe --config.list
+                IoSet p = new IoSet();
+                MemoryStream ms = new MemoryStream();
+                StreamWriter swriter = new StreamWriter(ms);
+                if (p.SetOutput(swriter) == false)
+                {
+                    TestMain.Regression(typeof(ConMainTest).Name, 1051);
+                }
+                string[] test = 
+                    {
+                    "--config.list"
+                    };
+                if (ConMain.DoMain(test, p) != 0)
+                {
+                    TestMain.Regression(typeof(ConMainTest).Name, 1061);
+                }
                 swriter.Flush();
                 ms.Seek(0L, SeekOrigin.Begin);
                 StreamReader reader = new StreamReader(ms);
@@ -82,13 +123,13 @@ namespace EzLogTesting
                     File.Delete(cfg.GetConfigFile());
                 }
                 LogOptionParams p = new LogOptionParams(0, null, null);
-                MemoryStream ms = new MemoryStream(1024);
+                MemoryStream ms = new MemoryStream();
                 StreamWriter swriter = new StreamWriter(ms);
                 if (p.SetOutput(swriter) == false)
                 {
                     TestMain.Regression(typeof(ConMainTest).Name, 2011);
                 }
-                EzLog.ConMain.config_list(ref p);
+                EzLog.ConMain.config_list(p);
                 swriter.Flush();
                 ms.Seek(0L, SeekOrigin.Begin);
                 StreamReader reader = new StreamReader(ms);
@@ -114,5 +155,6 @@ namespace EzLogTesting
             }
 
         }
+
     }
 }
