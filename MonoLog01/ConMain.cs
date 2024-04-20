@@ -182,7 +182,7 @@ namespace EzLog
                 }
                 TUI.Message("Loaded [" + cfg.ConfigName + "] ...", p.Out);
                 List<string> alist = new List<string>();
-                for (int ss = p.where + 2; ss < p.opts.Length; ss++)
+                for (int ss = p.whence + 2; ss < p.opts.Length; ss++)
                 {
                     alist.Add(p.opts[ss]);
                 }

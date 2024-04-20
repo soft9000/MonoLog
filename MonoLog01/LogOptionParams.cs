@@ -12,7 +12,7 @@ namespace EzLog
     public class LogOptionParams : IoSet
     {
 
-        internal int where;
+        internal int whence;
         internal string option;
         internal string[] opts;
 
@@ -22,9 +22,9 @@ namespace EzLog
         /// <param name="where">Location of the string in the array.</param>
         /// <param name="sFlag">The parameter's string</param>
         /// <param name="opts">The inclusive set of command-line parameters.</param>
-        public LogOptionParams(int where, string sFlag, string[] opts) : base()
+        public LogOptionParams(int whence, string sFlag, string[] opts) : base()
         {
-            this.where = where;
+            this.whence = whence;
             if (sFlag == null)
             {
                 sFlag = "";
@@ -43,7 +43,7 @@ namespace EzLog
         /// <returns>False == unsane.</returns>
         public bool IsSane()
         {
-            if(where < 0 || option == null || opts == null)
+            if(whence < 0 || option == null || opts == null)
             {
                 return false;
             }

@@ -27,7 +27,7 @@ namespace EzLogTesting
             LogConfigDlgTest.MainTest();
             ConMainTest.MainTest();
 
-            MonoLog.Log("Testing Success");
+            MonoLog.Log("\n\nTesting Success - Press [enter] to continue: ");
             Console.In.ReadLine();
         }
     }
