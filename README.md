@@ -5,9 +5,9 @@ Also prefer to do so via a binary executable.
 
 Adding configurable logging, therefore, my choices were either to (1) update the EzLog proper, or to (2) simply re-write EzLog using C#. 
 
-The later was simply less disrutive to my existing [.ezlog user base](https://github.com/soft9000/era). --Also allows using Mono for any GUI if, as well as when.
+The later was simply less disruptive to my existing [.ezlog user base](https://github.com/soft9000/era). --Also allows using Mono for any GUI if, as well as when.
 
-## Usage Hightlights
+## Usage Highlights
 * Configurations managed by [unique, single alphanumeric names](https://github.com/soft9000/MonoLog/blob/0894d2c076e77340a7943e9d3a030a1baeb98f56/MonoLog01/LogConfigDlg.cs#L21).
 * Configurations reside [next to the active assembly](https://github.com/soft9000/MonoLog/blob/0894d2c076e77340a7943e9d3a030a1baeb98f56/MonoLog01/LogHome.cs#L15).
 * '[TagLines](https://github.com/soft9000/MonoLog/blob/0894d2c076e77340a7943e9d3a030a1baeb98f56/MonoLog01/TagLines.cs#L17)' replace INI Files.
